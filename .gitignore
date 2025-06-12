@@ -1,0 +1,63 @@
+# Build Folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache files
+.vs/
+
+# Rider project files
+.idea/
+
+# DotNet Core publish folder
+publish/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Npm Packages
+node_modules/
+
+# Logs
+*.log
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+
+# NuGet Symbol Packages
+*.symbols.nupkg
+
+# Microsoft Azure Web Apps publish settings
+*.PublishSettings
+
+# DotCover
+*.dotCover
+
+# Backup & report files from converting an old project file
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# Others
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# JetBrains Rider
+.idea/
+
+# Rider local history
+.idea/.idea.LocalHistory
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# VS Code settings folder
+.vscode/
