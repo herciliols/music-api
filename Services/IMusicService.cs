@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using music_api.Models;
 
 namespace music_api.Services
@@ -7,8 +7,8 @@ namespace music_api.Services
     {
         IEnumerable<Music> GetAll();
         Music GetById(int id);
-        Music Add(Music newMusic);
-        bool Update(int id, Music updatedMusic);
+        Music Add(Music music);
+        bool Update(int id, Music music);
         bool Delete(int id);
     }
 }

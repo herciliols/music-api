@@ -11,6 +11,8 @@ services:
       - "1433:1433"
     volumes:
       - sqlserverdata:/var/opt/mssql
+      - ./sqlscripts:/usr/config
+    command: /bin/bash -c "/opt/mssql/bin/sqlservr & sleep 30 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P password@2025 -i /usr/config/init.sql"
     restart: always
 
 volumes:

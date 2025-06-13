@@ -1,51 +1,98 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using music_api.Data;
 using music_api.Models;
 
 namespace music_api.Services
 {
     public class MusicService : IMusicService
     {
-        private readonly List<Music> _musics;
+        private readonly MusicDbContext _context;
 
-        public MusicService()
+        public MusicService(MusicDbContext context)
         {
-            _musics = new List<Music>
+            _context = context;
+        }
+
+        public IEnumerable<Music> GetAll()
+        {
+            try
             {
-                new Music { Id = 1, Title = "Imagine", Artist = "John Lennon", Album = "Imagine" },
-                new Music { Id = 2, Title = "Bohemian Rhapsody", Artist = "Queen", Album = "A Night at the Opera" }
-            };
+                return _context.Tracks.ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+                return new List<Music>();
+            }
         }
 
-        public IEnumerable<Music> GetAll() => _musics;
-
-        public Music GetById(int id) => _musics.FirstOrDefault(m => m.Id == id);
-
-        public Music Add(Music newMusic)
+        public Music GetById(int id)
         {
-            newMusic.Id = _musics.Any() ? _musics.Max(m => m.Id) + 1 : 1;
-            _musics.Add(newMusic);
-            return newMusic;
+            try
+            {
+                return _context.Tracks.Find(id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+                return null;
+            }
         }
 
-        public bool Update(int id, Music updatedMusic)
+        public Music Add(Music music)
         {
-            var music = _musics.FirstOrDefault(m => m.Id == id);
-            if (music == null) return false;
+            try
+            {
+                _context.Tracks.Add(music);
+                _context.SaveChanges();
+                return music;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+                return null;
+            }
+        }
 
-            music.Title = updatedMusic.Title;
-            music.Artist = updatedMusic.Artist;
-            music.Album = updatedMusic.Album;
-            return true;
+        public bool Update(int id, Music music)
+        {
+            try
+            {
+                var existing = _context.Tracks.Find(id);
+                if (existing == null) return false;
+
+                existing.Title = music.Title;
+                existing.Duration = music.Duration;
+                existing.AlbumId = music.AlbumId;
+
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+                return false;
+            }
         }
 
         public bool Delete(int id)
         {
-            var music = _musics.FirstOrDefault(m => m.Id == id);
-            if (music == null) return false;
+            try
+            {
+                var music = _context.Tracks.Find(id);
+                if (music == null) return false;
 
-            _musics.Remove(music);
-            return true;
+                _context.Tracks.Remove(music);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+                return false;
+            }
         }
     }
 }
