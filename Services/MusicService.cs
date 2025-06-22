@@ -32,12 +32,21 @@ namespace music_api.Services
         {
             try
             {
-                return _context.Tracks.Find(id);
+                var music = _context.Tracks.Find(id);
+
+                if (music == null)
+                {
+                    Console.WriteLine($"Música com ID {id} não encontrada.");
+                }
+                else
+                {
+                    return music;
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
-                return null;
+                return new List<Music>();
             }
         }
 
@@ -46,7 +55,7 @@ namespace music_api.Services
             try
             {
                 _context.Tracks.Add(music);
-                _context.SaveChanges();
+                _context.SaveChanges(); 
                 return music;
             }
             catch (Exception ex)
@@ -55,6 +64,7 @@ namespace music_api.Services
                 return null;
             }
         }
+
 
         public bool Update(int id, Music music)
         {
@@ -77,6 +87,7 @@ namespace music_api.Services
             }
         }
 
+
         public bool Delete(int id)
         {
             try
@@ -94,5 +105,6 @@ namespace music_api.Services
                 return false;
             }
         }
+
     }
 }

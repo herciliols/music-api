@@ -27,22 +27,37 @@ namespace music_api.Controllers
         public ActionResult<Music> Get(int id)
         {
             var music = _musicService.GetById(id);
-            if (music == null) return NotFound();
+            if (music == null)
+                return NotFound();
+
             return Ok(music);
         }
 
         [HttpPost]
-        public ActionResult<Music> Post(Music newMusic)
+        public ActionResult<Music> Post([FromBody] Music newMusic)
         {
+            if (newMusic == null)
+                return BadRequest("Invalid music data.");
+
             var createdMusic = _musicService.Add(newMusic);
+
+            if (createdMusic == null)
+                return StatusCode(500, "An error occurred while saving the music.");
+
             return CreatedAtAction(nameof(Get), new { id = createdMusic.Id }, createdMusic);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Music updatedMusic)
+        public IActionResult Put(int id, [FromBody] Music updatedMusic)
         {
+            if (updatedMusic == null || id != updatedMusic.Id)
+                return BadRequest("Invalid music data.");
+
             var updated = _musicService.Update(id, updatedMusic);
-            if (!updated) return NotFound();
+
+            if (!updated)
+                return NotFound();
+
             return NoContent();
         }
 
@@ -50,7 +65,9 @@ namespace music_api.Controllers
         public IActionResult Delete(int id)
         {
             var deleted = _musicService.Delete(id);
-            if (!deleted) return NotFound();
+            if (!deleted)
+                return NotFound();
+
             return NoContent();
         }
     }
